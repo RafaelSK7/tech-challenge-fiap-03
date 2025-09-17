@@ -3,6 +3,7 @@ package fiap.tech.challenge.hospital_manager.controller.paciente;
 import fiap.tech.challenge.hospital_manager.dto.in.PacienteIn;
 import fiap.tech.challenge.hospital_manager.dto.out.PacienteOut;
 import fiap.tech.challenge.hospital_manager.service.paciente.PacienteService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -41,7 +42,7 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<PacienteOut> findById(@RequestBody PacienteIn pacienteRequest,
+    public ResponseEntity<PacienteOut> findById(@RequestBody @Valid PacienteIn pacienteRequest,
                                                 UriComponentsBuilder uriBuilder) {
         PacienteOut pacienteOut = pacienteService.createPaciente(pacienteRequest);
         URI uri = uriBuilder.path("/paciente/{id}").buildAndExpand(pacienteOut.pacienteId()).toUri();
@@ -49,7 +50,7 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteOut> creditarSaldo(@PathVariable Long id, @RequestBody PacienteIn pacienteRequest,
+    public ResponseEntity<PacienteOut> creditarSaldo(@PathVariable Long id, @RequestBody @Valid PacienteIn pacienteRequest,
                                                        UriComponentsBuilder uriBuilder) {
         log.info("Cadastrando a conta.");
         return ResponseEntity.ok(pacienteService.updatePaciente(pacienteRequest, id));

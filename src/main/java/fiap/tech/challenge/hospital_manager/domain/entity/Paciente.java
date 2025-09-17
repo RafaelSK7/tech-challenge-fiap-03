@@ -3,6 +3,7 @@ package fiap.tech.challenge.hospital_manager.domain.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import fiap.tech.challenge.hospital_manager.dto.in.PacienteIn;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -19,10 +20,13 @@ public class Paciente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPaciente;
 
+    @NotBlank
     private String nomePaciente;
 
+    @NotBlank
     private String nomeConvenio;
-
+    
+    @NotBlank
     private String carteirinhaConvenio;
 
     @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
