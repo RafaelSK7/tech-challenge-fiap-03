@@ -2,6 +2,7 @@ package fiap.tech.challenge.hospital_manager.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class Profissional {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProfissional;
 
+    @NotBlank
     private String nomeProfissional;
 
     private List<Especialidade> especialidades;
