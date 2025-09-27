@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Entity(name="consulta")
+@Entity(name = "consulta")
 public class Consulta {
 
     @Id
@@ -20,15 +20,22 @@ public class Consulta {
 
     private LocalDateTime dataHoraConsulta;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "paciente_id", referencedColumnName = "idPaciente")
     @JsonBackReference
     private Paciente paciente;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "profissional_id", referencedColumnName = "idProfissional")
     @JsonBackReference
     private Profissional profissional;
 
     private Especialidade especialidade;
+
+    public Consulta(LocalDateTime dataHoraConsulta, Paciente paciente, Profissional profissional, Especialidade especialidade) {
+        this.dataHoraConsulta = dataHoraConsulta;
+        this.paciente = paciente;
+        this.profissional = profissional;
+        this.especialidade = especialidade;
+    }
 }

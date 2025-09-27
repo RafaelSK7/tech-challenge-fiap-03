@@ -1,8 +1,6 @@
 package fiap.tech.challenge.hospital_manager.domain.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Getter;
 
 @Getter
@@ -13,6 +11,16 @@ public enum Especialidade {
 
     Especialidade(String descricao) {
         this.descricao = descricao;
+    }
+
+    // Método para obter a enum a partir da descrição
+    public static Especialidade fromDescricao(String descricao) {
+        for (Especialidade e : values()) {
+            if (e.getDescricao().equalsIgnoreCase(descricao)) {
+                return e;
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
 }

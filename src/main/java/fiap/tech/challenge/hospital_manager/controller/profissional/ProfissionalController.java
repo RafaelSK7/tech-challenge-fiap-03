@@ -1,7 +1,6 @@
 package fiap.tech.challenge.hospital_manager.controller.profissional;
 
 import fiap.tech.challenge.hospital_manager.dto.in.ProfissionalIn;
-import fiap.tech.challenge.hospital_manager.dto.out.PacienteOut;
 import fiap.tech.challenge.hospital_manager.dto.out.ProfissionalOut;
 import fiap.tech.challenge.hospital_manager.service.profissional.ProfissionalService;
 import lombok.extern.slf4j.Slf4j;
