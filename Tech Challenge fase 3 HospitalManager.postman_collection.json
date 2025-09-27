@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "",
+							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,12 +25,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080",
+							"raw": "http://localhost:8080/pacientes",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "8080"
+							"port": "8080",
+							"path": [
+								"pacientes"
+							]
 						}
 					},
 					"response": []
@@ -112,7 +115,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomeProfissional\": \"Dr Dedao\",\r\n    \"especialidades\": [\"UROLOGIA\"],\r\n    \"conselhoRegional\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"nomeProfissional\": \"Gabriela\",\r\n    \"especialidades\": [\"GINECOLOGIA_OBSTETRICIA\"],\r\n    \"conselhoRegional\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,6 +219,39 @@
 							"path": [
 								"profissional",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consulta Producer",
+			"item": [
+				{
+					"name": "Marcar Consulta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"dataHoraConsulta\": \"2025-09-28T12:00:00\",\r\n  \"idPaciente\": 1,\r\n  \"idProfissional\": 1,\r\n  \"especialidade\": \"ginecologia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/agendarConsulta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"agendarConsulta"
 							]
 						}
 					},
