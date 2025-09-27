@@ -4,8 +4,6 @@ import fiap.tech.challenge.hospital_manager.dto.in.PacienteIn;
 import fiap.tech.challenge.hospital_manager.dto.out.PacienteOut;
 import fiap.tech.challenge.hospital_manager.service.paciente.PacienteService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -41,15 +39,15 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<PacienteOut> findById(@RequestBody PacienteIn pacienteRequest,
-                                                UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<PacienteOut> createPaciente(@RequestBody PacienteIn pacienteRequest,
+                                                      UriComponentsBuilder uriBuilder) {
         PacienteOut pacienteOut = pacienteService.createPaciente(pacienteRequest);
         URI uri = uriBuilder.path("/paciente/{id}").buildAndExpand(pacienteOut.pacienteId()).toUri();
         return ResponseEntity.created(uri).body(pacienteOut);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PacienteOut> creditarSaldo(@PathVariable Long id, @RequestBody PacienteIn pacienteRequest,
+    public ResponseEntity<PacienteOut> updatePaciente(@PathVariable Long id, @RequestBody PacienteIn pacienteRequest,
                                                        UriComponentsBuilder uriBuilder) {
         log.info("Cadastrando a conta.");
         return ResponseEntity.ok(pacienteService.updatePaciente(pacienteRequest, id));

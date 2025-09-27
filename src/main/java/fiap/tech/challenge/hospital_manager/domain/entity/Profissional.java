@@ -1,6 +1,7 @@
 package fiap.tech.challenge.hospital_manager.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import fiap.tech.challenge.hospital_manager.dto.in.ProfissionalIn;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,5 +29,10 @@ public class Profissional {
     @JsonManagedReference
     private List<Consulta> consultas;
 
+    public Profissional (ProfissionalIn profissionalIn){
+        this.setNomeProfissional(profissionalIn.nomeProfissional());
+        this.setEspecialidades(profissionalIn.especialidades());
+        this.setConselhoRegional(profissionalIn.conselhoRegional());
+    }
 
 }
