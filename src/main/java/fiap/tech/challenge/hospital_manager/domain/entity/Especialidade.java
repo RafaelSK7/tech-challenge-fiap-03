@@ -13,7 +13,6 @@ public enum Especialidade {
         this.descricao = descricao;
     }
 
-    // Método para obter a enum a partir da descrição
     public static Especialidade fromDescricao(String descricao) {
         for (Especialidade e : values()) {
             if (e.getDescricao().equalsIgnoreCase(descricao)) {

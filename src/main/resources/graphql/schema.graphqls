@@ -1,0 +1,87 @@
+enum Especialidade {
+    CLINICA_GERAL
+    PEDIATRIA
+    CIRURGIA_GERAL
+    GINECOLOGIA_OBSTETRICIA
+    ANESTESIOLOGIA
+    ORTOPEDIA_TRAUMATOLOGIA
+    CARDIOLOGIA
+    PSIQUIATRIA
+    DERMATOLOGIA
+    NEUROLOGIA
+    ENDOCRINOLOGIA
+    GASTROENTEROLOGIA
+    UROLOGIA
+    RADIOLOGIA
+    OTORRINOLARINGOLOGIA
+    INFECTOLOGIA
+    NEFROLOGIA
+    ONCOLOGIA
+    REUMATOLOGIA
+    GERIATRIA
+    ENFERMAGEM
+}
+
+type Paciente {
+    idPaciente: ID!
+    nomePaciente: String!
+    nomeConvenio: String!
+    carteirinhaConvenio: String!
+    consultas: [Consulta!]
+}
+
+type Profissional {
+    idProfissional: ID!
+    nomeProfissional: String!
+    especialidades: [Especialidade!]!
+    conselhoRegional: Int
+    consultas: [Consulta!]
+}
+
+type Consulta {
+    idConsulta: ID!
+    dataHoraConsulta: String!
+    paciente: Paciente!
+    profissional: Profissional!
+    especialidade: Especialidade!
+}
+
+extend type Query {
+    todasConsultas: [Consulta!]!
+    consultaPorId(id: ID!): Consulta
+    pacientes: [Paciente!]!
+    profissionais: [Profissional!]!
+}
+
+input PacienteInput {
+    nomePaciente: String!
+    nomeConvenio: String!
+    carteirinhaConvenio: String!
+}
+
+input ProfissionalInput {
+    nomeProfissional: String!
+    especialidades: [Especialidade!]!
+    conselhoRegional: Int
+}
+
+input ConsultaInput {
+    dataHoraConsulta: String!
+    pacienteId: ID!
+    profissionalId: ID!
+    especialidade: Especialidade!
+}
+
+extend type Mutation {
+    criarPaciente(input: PacienteInput!): Paciente!
+    criarProfissional(input: ProfissionalInput!): Profissional!
+    criarConsulta(input: ConsultaInput!): Consulta!
+
+    atualizarPaciente(id: ID!, input: PacienteInput!): Paciente
+    atualizarProfissional(id: ID!, input: ProfissionalInput!): Profissional
+    atualizarConsulta(id: ID!, input: ConsultaInput!): Consulta
+
+    deletarPaciente(id: ID!): Boolean
+    deletarProfissional(id: ID!): Boolean
+    deletarConsulta(id: ID!): Boolean
+}
