@@ -11,7 +11,43 @@
 			"name": "Paciente",
 			"item": [
 				{
+					"name": "Create Paciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pacientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pacientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
 					"request": {
 						"method": "GET",
 						"header": []
@@ -21,8 +57,29 @@
 				{
 					"name": "Update Paciente",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/pacientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pacientes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -49,37 +106,158 @@
 			]
 		},
 		{
-			"name": "Create Paciente",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Profissional",
+			"item": [
+				{
+					"name": "Create Profissional",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeProfissional\": \"Gabriela\",\r\n    \"especialidades\": [\"GINECOLOGIA_OBSTETRICIA\"],\r\n    \"conselhoRegional\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/profissional",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissional"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080"
+				{
+					"name": "FindAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/profissional",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissional"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/profissional/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissional",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profissional",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeProfissional\": \"Dr Cebola\",\r\n    \"especialidades\": [\"CLINICA_GERAL\",\"CARDIOLOGIA\", \"ENDOCRINOLOGIA\"],\r\n    \"conselhoRegional\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/profissional/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissional",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Profissional",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/profissional/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissional",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "FindById",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
+			"name": "Consulta Producer",
+			"item": [
+				{
+					"name": "Marcar Consulta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"dataHoraConsulta\": \"2025-09-28T12:00:00\",\r\n  \"idPaciente\": 1,\r\n  \"idProfissional\": 1,\r\n  \"especialidade\": \"ginecologia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/agendarConsulta",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"agendarConsulta"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
