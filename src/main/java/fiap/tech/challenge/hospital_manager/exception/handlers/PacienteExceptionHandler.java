@@ -1,7 +1,6 @@
 package fiap.tech.challenge.hospital_manager.exception.handlers;
 
 import fiap.tech.challenge.hospital_manager.exception.custom.PacienteNotFoundException;
-import fiap.tech.challenge.hospital_manager.controller.exceptions.ApiErrorArray;
 import fiap.tech.challenge.hospital_manager.utils.ApiErrorBuilder;
 
 import jakarta.servlet.http.HttpServletRequest;
