@@ -1,47 +1,46 @@
 package fiap.tech.challenge.hospital_manager.controller.consulta;
 
 import fiap.tech.challenge.hospital_manager.domain.entity.Consulta;
-import fiap.tech.challenge.hospital_manager.domain.entity.Paciente;
-import fiap.tech.challenge.hospital_manager.domain.entity.Profissional;
+import fiap.tech.challenge.hospital_manager.dto.in.ConsultaIn;
 import fiap.tech.challenge.hospital_manager.repository.consulta.ConsultaRepository;
-import fiap.tech.challenge.hospital_manager.repository.paciente.PacienteRepository;
-import fiap.tech.challenge.hospital_manager.repository.profissional.ProfissionalRepository;
+import fiap.tech.challenge.hospital_manager.service.consulta.ConsultaService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
 @Controller
+@Slf4j
 public class ConsultaController {
 
-    private PacienteRepository pacienteRepository;
-    private ProfissionalRepository profissionalRepository;
     private ConsultaRepository consultaRepository;
 
-    public ConsultaController(PacienteRepository pacienteRepository, ProfissionalRepository profissionalRepository, ConsultaRepository consultaRepository) {
-        this.pacienteRepository = pacienteRepository;
-        this.profissionalRepository = profissionalRepository;
-        this.consultaRepository = consultaRepository;
+    private ConsultaService consultaService;
+
+    public ConsultaController(ConsultaService consultaService) {
+        this.consultaService = consultaService;
     }
 
     @QueryMapping
     public List<Consulta> todasConsultas() {
-        return consultaRepository.findAll();
+        return consultaService.findAll();
     }
 
     @QueryMapping
     public Consulta consultaPorId(@Argument Long id) {
-        return consultaRepository.findById(id).orElse(null);
+        return consultaService.findById(id);
     }
 
-    @QueryMapping
-    public List<Paciente> pacientes() {
-        return pacienteRepository.findAll();
+    @MutationMapping
+    public Consulta atualizarConsulta(@Argument Long id, @Argument ConsultaIn consultaIn) {
+        return consultaService.updateConsulta(consultaIn, id);
     }
 
-    @QueryMapping
-    public List<Profissional> profissionais() {
-        return profissionalRepository.findAll();
+    @MutationMapping
+    public Boolean deletarConsulta(@Argument Long id) {
+        return consultaService.desmarcarConsulta(id);
     }
 }

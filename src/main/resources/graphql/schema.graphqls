@@ -49,8 +49,6 @@ type Consulta {
 extend type Query {
     todasConsultas: [Consulta!]!
     consultaPorId(id: ID!): Consulta
-    pacientes: [Paciente!]!
-    profissionais: [Profissional!]!
 }
 
 input PacienteInput {
@@ -73,15 +71,6 @@ input ConsultaInput {
 }
 
 extend type Mutation {
-    criarPaciente(input: PacienteInput!): Paciente!
-    criarProfissional(input: ProfissionalInput!): Profissional!
-    criarConsulta(input: ConsultaInput!): Consulta!
-
-    atualizarPaciente(id: ID!, input: PacienteInput!): Paciente
-    atualizarProfissional(id: ID!, input: ProfissionalInput!): Profissional
     atualizarConsulta(id: ID!, input: ConsultaInput!): Consulta
-
-    deletarPaciente(id: ID!): Boolean
-    deletarProfissional(id: ID!): Boolean
     deletarConsulta(id: ID!): Boolean
 }
