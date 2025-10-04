@@ -51,18 +51,6 @@ extend type Query {
     consultaPorId(id: ID!): Consulta
 }
 
-input PacienteInput {
-    nomePaciente: String!
-    nomeConvenio: String!
-    carteirinhaConvenio: String!
-}
-
-input ProfissionalInput {
-    nomeProfissional: String!
-    especialidades: [Especialidade!]!
-    conselhoRegional: Int
-}
-
 input ConsultaInput {
     dataHoraConsulta: String!
     pacienteId: ID!
