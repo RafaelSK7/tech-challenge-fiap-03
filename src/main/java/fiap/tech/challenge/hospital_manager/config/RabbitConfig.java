@@ -24,9 +24,18 @@ public class RabbitConfig {
     public static final String CONSULTA_QUEUE = "consulta_queue";
     public static final String ROUTING_KEY_CONSULTA = "consulta.new";
 
+    public static final String EXCHANGE_NOTIFICATION_NAME = "notification_exchange";
+    public static final String NOTIFICATION_QUEUE = "notification_queue";
+    public static final String ROUTING_KEY_NOTIFICATION = "notification.new";
+
     @Bean
     public DirectExchange exchange() {
         return new DirectExchange(EXCHANGE_NAME);
+    }
+
+    @Bean
+    public DirectExchange notificationExchange() {
+        return new DirectExchange(EXCHANGE_NOTIFICATION_NAME);
     }
 
     @Bean
@@ -35,8 +44,18 @@ public class RabbitConfig {
     }
 
     @Bean
+    public Queue notificationQueue() {
+        return new Queue(NOTIFICATION_QUEUE, true);
+    }
+
+    @Bean
     public Binding binding() {
         return BindingBuilder.bind(consultaQueue()).to(exchange()).with(ROUTING_KEY_CONSULTA);
+    }
+
+    @Bean
+    public Binding notificationBinding() {
+        return BindingBuilder.bind(notificationQueue()).to(notificationExchange()).with(ROUTING_KEY_NOTIFICATION);
     }
 
     @Bean
