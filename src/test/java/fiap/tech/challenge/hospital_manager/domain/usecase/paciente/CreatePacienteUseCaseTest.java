@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,6 +25,9 @@ class CreatePacienteUseCaseTest {
     @InjectMocks
     private CreatePacienteUseCase createPacienteUseCase;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private PacienteIn pacienteIn;
     private Paciente paciente;
 
@@ -34,10 +39,12 @@ class CreatePacienteUseCaseTest {
         pacienteIn = new PacienteIn(
             "João Silva",
             "Unimed",
-            "123456789"
+            "123456789",
+                "paciente",
+                "guest"
         );
 
-        paciente = new Paciente(pacienteIn);
+        paciente = new Paciente(pacienteIn, new BCryptPasswordEncoder());
     }
 
     @Test
@@ -45,6 +52,7 @@ class CreatePacienteUseCaseTest {
     void shouldCreatePacienteSuccessfully() {
         // Arrange
         when(pacienteRepository.save(any(Paciente.class))).thenReturn(paciente);
+        when(passwordEncoder.encode(any())).thenReturn("encoded password");
 
         // Act
         Paciente createdPaciente = createPacienteUseCase.createPaciente(pacienteIn);

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -26,6 +27,9 @@ class CreateProfissionalUseCaseTest {
     @InjectMocks
     private CreateProfissionalUseCase createProfissionalUseCase;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private ProfissionalIn profissionalIn;
 
     @BeforeEach
@@ -36,7 +40,9 @@ class CreateProfissionalUseCaseTest {
         profissionalIn = new ProfissionalIn(
             "Dr. João Silva",
             List.of(Especialidade.CARDIOLOGIA),
-            123456
+            123456,
+            "profissional",
+                "guest"
         );
     }
 
@@ -45,7 +51,7 @@ class CreateProfissionalUseCaseTest {
     void shouldCreateProfissionalSuccessfully() {
         // Arrange
         when(profissionalRepository.save(any(Profissional.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
+        when(passwordEncoder.encode(any())).thenReturn("encoded password");
         // Act
         Profissional createdProfissional = createProfissionalUseCase.createProfissional(profissionalIn);
 
