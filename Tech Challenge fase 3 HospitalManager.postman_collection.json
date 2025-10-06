@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\"\r\n}",
+							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\",\r\n    \"username\": \"paciente\",\r\n    \"password\": \"guest\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -115,7 +115,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomeProfissional\": \"Gabriela\",\r\n    \"especialidades\": [\"GINECOLOGIA_OBSTETRICIA\"],\r\n    \"conselhoRegional\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"nomeProfissional\": \"Gabriela\",\r\n    \"especialidades\": [\"GINECOLOGIA_OBSTETRICIA\", \"CLINICA_GERAL\"],\r\n    \"conselhoRegional\": \"123456\",\r\n    \"username\": \"profissional\",\r\n    \"password\":\"guest\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -236,7 +236,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"dataHoraConsulta\": \"2025-09-28T12:00:00\",\r\n  \"idPaciente\": 1,\r\n  \"idProfissional\": 1,\r\n  \"especialidade\": \"ginecologia\"\r\n}",
+							"raw": "{\r\n  \"dataHoraConsulta\": \"2025-11-20T12:00:00\",\r\n  \"idPaciente\": 1,\r\n  \"idProfissional\": 1,\r\n  \"especialidade\": \"ginecologia\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -252,6 +252,87 @@
 							"port": "8081",
 							"path": [
 								"agendarConsulta"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consulta GraphQL",
+			"item": [
+				{
+					"name": "Todas as consultas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX1BBQ0lFTlRFIn1dLCJzdWIiOiJwYWNpZW50ZSIsImlhdCI6MTc1OTcwNjg4MiwiZXhwIjoxNzU5NzEwNDgyfQ.462Kln2C6WlRS4nJ-I6xQZTIAF9DXcw1su7sU2cWBUc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"query\": \"query { todasConsultas { dataHoraConsulta paciente { nomePaciente nomeConvenio carteirinhaConvenio } profissional { nomeProfissional conselhoRegional especialidades } especialidade } }\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth enfermeiro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"enfermeiro\",\r\n    \"password\": \"guest\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
 							]
 						}
 					},

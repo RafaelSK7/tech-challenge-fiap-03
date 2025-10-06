@@ -21,5 +21,4 @@ public enum Especialidade {
         }
         throw new IllegalArgumentException();
     }
-
 }

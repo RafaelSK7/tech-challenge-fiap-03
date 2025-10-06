@@ -51,14 +51,14 @@ extend type Query {
     consultaPorId(id: ID!): Consulta
 }
 
-input ConsultaInput {
+input ConsultaIn {
     dataHoraConsulta: String!
-    pacienteId: ID!
-    profissionalId: ID!
+    idPaciente: ID!
+    idProfissional: ID!
     especialidade: Especialidade!
 }
 
 extend type Mutation {
-    atualizarConsulta(id: ID!, input: ConsultaInput!): Consulta
+    atualizarConsulta(id: ID!, input: ConsultaIn!): Consulta
     deletarConsulta(id: ID!): Boolean
 }

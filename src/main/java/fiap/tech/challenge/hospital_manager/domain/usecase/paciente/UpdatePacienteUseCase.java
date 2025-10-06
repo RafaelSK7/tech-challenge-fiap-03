@@ -1,6 +1,7 @@
 package fiap.tech.challenge.hospital_manager.domain.usecase.paciente;
 
 import fiap.tech.challenge.hospital_manager.domain.entity.Paciente;
+import fiap.tech.challenge.hospital_manager.domain.entity.Usuario;
 import fiap.tech.challenge.hospital_manager.dto.in.PacienteIn;
 import fiap.tech.challenge.hospital_manager.repository.paciente.PacienteRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,12 @@ public class UpdatePacienteUseCase {
         pacienteToUpdate.setNomePaciente(pacienteRequest.nomePaciente());
         pacienteToUpdate.setNomeConvenio(pacienteRequest.nomeConvenio());
         pacienteToUpdate.setCarteirinhaConvenio(pacienteRequest.carteirinhaConvenio());
+
+        Usuario usuario = pacienteToUpdate.getUsuario();
+        usuario.setUsername(pacienteRequest.username());
+        usuario.setPassword(pacienteRequest.password());
+
+        pacienteToUpdate.setUsuario(usuario);
 
         return pacienteRepository.save(pacienteToUpdate);
     }

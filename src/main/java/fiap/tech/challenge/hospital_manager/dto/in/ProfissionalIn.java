@@ -8,6 +8,9 @@ public record ProfissionalIn(
 
         String nomeProfissional,
         List<Especialidade>especialidades,
-        Integer conselhoRegional
+        Integer conselhoRegional,
+        String username,
+        String password
+
 ) {
 }

@@ -6,11 +6,10 @@ import fiap.tech.challenge.hospital_manager.domain.entity.Paciente;
 import fiap.tech.challenge.hospital_manager.domain.entity.Profissional;
 import fiap.tech.challenge.hospital_manager.domain.usecase.paciente.ReadPacienteUseCase;
 import fiap.tech.challenge.hospital_manager.domain.usecase.profissional.ReadProfissionalUseCase;
-import fiap.tech.challenge.hospital_manager.dto.in.ConsultaIn;
+import fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in.ConsultaIn;
 import fiap.tech.challenge.hospital_manager.exception.custom.EspecialidadeNotFoundException;
 import fiap.tech.challenge.hospital_manager.repository.consulta.ConsultaRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.domain.EntityScanPackages;
 import org.springframework.stereotype.Service;
 
 @Service

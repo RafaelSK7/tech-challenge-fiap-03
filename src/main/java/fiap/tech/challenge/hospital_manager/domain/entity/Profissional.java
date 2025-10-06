@@ -5,6 +5,7 @@ import fiap.tech.challenge.hospital_manager.dto.in.ProfissionalIn;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Entity(name="profissional")
+@Entity(name = "profissional")
 public class Profissional {
 
     @Id
@@ -31,10 +32,20 @@ public class Profissional {
     @JsonManagedReference
     private List<Consulta> consultas;
 
-    public Profissional (ProfissionalIn profissionalIn){
+    // Ligação 1:1 com Usuario
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_id", referencedColumnName = "idUsuario", nullable = false)
+    private Usuario usuario;
+
+    public Profissional(ProfissionalIn profissionalIn, PasswordEncoder encoder) {
         this.setNomeProfissional(profissionalIn.nomeProfissional());
         this.setEspecialidades(profissionalIn.especialidades());
         this.setConselhoRegional(profissionalIn.conselhoRegional());
+        this.setUsuario(Usuario.builder()
+                .username(profissionalIn.username())
+                .password(encoder.encode(profissionalIn.password()))
+                .tipoUsuario(getEspecialidades().contains(Especialidade.ENFERMAGEM) ? TipoUsuario.ENFERMEIRO : TipoUsuario.MEDICO)
+                .build());
     }
 
 }

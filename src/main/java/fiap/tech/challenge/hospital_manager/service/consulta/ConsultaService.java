@@ -4,7 +4,7 @@ import fiap.tech.challenge.hospital_manager.domain.entity.Consulta;
 import fiap.tech.challenge.hospital_manager.domain.usecase.consulta.DesmarcarConsultaUseCase;
 import fiap.tech.challenge.hospital_manager.domain.usecase.consulta.ReadConsultaUseCase;
 import fiap.tech.challenge.hospital_manager.domain.usecase.consulta.UpdateConsultaUseCase;
-import fiap.tech.challenge.hospital_manager.dto.in.ConsultaIn;
+import fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in.ConsultaIn;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package fiap.tech.challenge.hospital_manager.dto.in;
+package fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in;
 
 import java.time.LocalDateTime;
 

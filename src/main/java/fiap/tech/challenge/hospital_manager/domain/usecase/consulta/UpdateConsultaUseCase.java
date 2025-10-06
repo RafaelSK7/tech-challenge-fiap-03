@@ -6,7 +6,7 @@ import fiap.tech.challenge.hospital_manager.domain.entity.Paciente;
 import fiap.tech.challenge.hospital_manager.domain.entity.Profissional;
 import fiap.tech.challenge.hospital_manager.domain.usecase.paciente.ReadPacienteUseCase;
 import fiap.tech.challenge.hospital_manager.domain.usecase.profissional.ReadProfissionalUseCase;
-import fiap.tech.challenge.hospital_manager.dto.in.ConsultaIn;
+import fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in.ConsultaIn;
 import fiap.tech.challenge.hospital_manager.exception.custom.EspecialidadeNotFoundException;
 import fiap.tech.challenge.hospital_manager.repository.consulta.ConsultaRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +21,11 @@ public class UpdateConsultaUseCase {
     private ReadPacienteUseCase readPacienteUseCase;
     private ReadProfissionalUseCase readProfissionalUseCase;
 
-    public UpdateConsultaUseCase(ConsultaRepository consultaRepository, ReadConsultaUseCase readConsultaUseCase) {
+    public UpdateConsultaUseCase(ConsultaRepository consultaRepository, ReadConsultaUseCase readConsultaUseCase, ReadPacienteUseCase readPacienteUseCase, ReadProfissionalUseCase readProfissionalUseCase) {
         this.consultaRepository = consultaRepository;
         this.readConsultaUseCase = readConsultaUseCase;
+        this.readPacienteUseCase = readPacienteUseCase;
+        this.readProfissionalUseCase = readProfissionalUseCase;
     }
 
     public Consulta updateConsulta(ConsultaIn consultaIn, Long idConsulta) {
