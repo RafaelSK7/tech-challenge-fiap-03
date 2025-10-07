@@ -30,7 +30,7 @@ public class UsuarioExceptionHandler {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex, request);
     }
 
-    private ResponseEntity<ApiErrorArray> buildErrorResponse(HttpStatus status, Throwable ex,
+    private ResponseEntity<ApiErrorArray> buildErrorResponse(HttpStatus status, Exception ex,
             HttpServletRequest request) {
         logger.error("Error [{}] at {}: {}", status.value(), request.getRequestURI(), ex.getMessage(), ex);
         return ApiErrorBuilder.build(status, ex.getMessage(), request);
