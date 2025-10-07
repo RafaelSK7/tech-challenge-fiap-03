@@ -87,7 +87,7 @@ public class RabbitConfig {
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory,
-            Jackson2JsonMessageConverter consumerMessageConverter
+            Jackson2JsonMessageConverter consumerMessageConverter,
             RabbitMqErrorHandler errorHandler) {
 
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();

@@ -34,7 +34,7 @@ public class ConsultaConsumer {
     }
 
     @RabbitListener(queues = RabbitConfig.CONSULTA_QUEUE)
-    public void marcarConsulta(Message message) throws UsuarioNaoAutorizadoException {
+    public void marcarConsulta(Message message, Channel channel) throws UsuarioNaoAutorizadoException {
         try {
             String authorizationHeader = message.getMessageProperties().getHeader("Authorization");
 
@@ -59,7 +59,7 @@ public class ConsultaConsumer {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             notificationPublisherService.sendNewNotification("Sua consulta foi agendada com sucesso.");
         } catch (Exception e) {
-            errorHandler.handleInvalidMessage(consultaIn, message, channel, e);
+            errorHandler.handleInvalidMessage(message, channel, e);
         }
     }
 }
