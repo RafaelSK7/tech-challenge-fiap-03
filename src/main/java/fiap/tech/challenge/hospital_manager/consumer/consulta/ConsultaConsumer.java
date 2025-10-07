@@ -1,4 +1,4 @@
-package fiap.tech.challenge.hospital_manager.consumer.cosulta;
+package fiap.tech.challenge.hospital_manager.consumer.consulta;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fiap.tech.challenge.hospital_manager.config.RabbitConfig;
@@ -34,7 +34,7 @@ public class ConsultaConsumer {
     }
 
     @RabbitListener(queues = RabbitConfig.CONSULTA_QUEUE)
-    public void marcarConsulta(Message message, Channel channel) throws UsuarioNaoAutorizadoException {
+    public void marcarConsulta(Message message, Channel channel) {
         try {
             String authorizationHeader = message.getMessageProperties().getHeader("Authorization");
 
@@ -43,8 +43,6 @@ public class ConsultaConsumer {
             }
 
             String token = authorizationHeader.substring(7);
-
-            // 2️⃣ Extrai role do token
             String role = jwtUtil.getRoleFromToken(token);
 
             if (!"ROLE_ENFERMEIRO".equals(role)) {
@@ -52,7 +50,6 @@ public class ConsultaConsumer {
             }
 
             String body = new String(message.getBody());
-
             ConsultaIn consultaIn = objectMapper.readValue(body, ConsultaIn.class);
 
             marcarConsultaUseCase.marcarConsulta(consultaIn);

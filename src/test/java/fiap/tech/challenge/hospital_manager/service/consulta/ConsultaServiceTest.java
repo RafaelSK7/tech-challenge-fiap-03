@@ -7,90 +7,100 @@ import fiap.tech.challenge.hospital_manager.domain.usecase.consulta.UpdateConsul
 import fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in.ConsultaIn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ConsultaServiceTest {
 
     @Mock
-    private ReadConsultaUseCase readUseCase;
+    private ReadConsultaUseCase readConsultaUseCase;
 
     @Mock
-    private UpdateConsultaUseCase updateUseCase;
+    private UpdateConsultaUseCase updateConsultaUseCase;
 
     @Mock
-    private DesmarcarConsultaUseCase desmarcarUseCase;
+    private DesmarcarConsultaUseCase desmarcarConsultaUseCase;
 
     @InjectMocks
-    private ConsultaService service;
+    private ConsultaService consultaService;
+
+    private Consulta consulta;
+    private ConsultaIn consultaIn;
 
     @BeforeEach
-    void setup() {
-        MockitoAnnotations.openMocks(this);
+    void setUp() {
+        consulta = new Consulta();
+        consulta.setIdConsulta(1L);
+
+        consultaIn = new ConsultaIn(LocalDateTime.now(), 1l, 1l, "ginecologia");
+        // se necessário, configurar campos de consultaIn
     }
 
     @Test
-    void deveRetornarListaDeConsultas_QuandoFindAllChamado() {
+    void deveRetornarTodasConsultas() {
         // Arrange
-        var consulta1 = mock(Consulta.class);
-        var consulta2 = mock(Consulta.class);
-        when(readUseCase.findAll()).thenReturn(List.of(consulta1, consulta2));
+        when(readConsultaUseCase.findAll()).thenReturn(List.of(consulta));
 
         // Act
-        List<Consulta> result = service.findAll();
+        List<Consulta> resultado = consultaService.findAll();
 
         // Assert
-        assertThat(result).hasSize(2);
-        assertThat(result).containsExactly(consulta1, consulta2);
-        verify(readUseCase, times(1)).findAll();
+        assertEquals(1, resultado.size());
+        assertEquals(1L, resultado.get(0).getIdConsulta());
+        verify(readConsultaUseCase, times(1)).findAll();
+        verifyNoInteractions(updateConsultaUseCase, desmarcarConsultaUseCase);
     }
 
     @Test
-    void deveRetornarConsultaPorId_QuandoFindByIdChamado() {
+    void deveRetornarConsultaPorId() {
         // Arrange
-        var id = 1L;
-        var expectedConsulta = mock(Consulta.class);
-        when(readUseCase.findById(id)).thenReturn(expectedConsulta);
+        when(readConsultaUseCase.findById(1L)).thenReturn(consulta);
 
         // Act
-        Consulta result = service.findById(id);
+        Consulta resultado = consultaService.findById(1L);
 
         // Assert
-        assertThat(result).isEqualTo(expectedConsulta);
-        verify(readUseCase, times(1)).findById(id);
+        assertNotNull(resultado);
+        assertEquals(1L, resultado.getIdConsulta());
+        verify(readConsultaUseCase, times(1)).findById(1L);
+        verifyNoInteractions(updateConsultaUseCase, desmarcarConsultaUseCase);
     }
 
     @Test
-    void deveAtualizarConsulta_QuandoUpdateChamado() {
+    void deveAtualizarConsulta() {
         // Arrange
-        var id = 5L;
-        var consultaIn = mock(ConsultaIn.class);
-        var expectedConsulta = mock(Consulta.class);
-        when(updateUseCase.updateConsulta(consultaIn, id)).thenReturn(expectedConsulta);
+        when(updateConsultaUseCase.updateConsulta(consultaIn, 1L)).thenReturn(consulta);
 
         // Act
-        Consulta result = service.updateConsulta(consultaIn, id);
+        Consulta resultado = consultaService.updateConsulta(consultaIn, 1L);
 
         // Assert
-        assertThat(result).isEqualTo(expectedConsulta);
-        verify(updateUseCase, times(1)).updateConsulta(consultaIn, id);
+        assertNotNull(resultado);
+        assertEquals(1L, resultado.getIdConsulta());
+        verify(updateConsultaUseCase, times(1)).updateConsulta(consultaIn, 1L);
+        verifyNoInteractions(readConsultaUseCase, desmarcarConsultaUseCase);
     }
 
     @Test
-    void deveDesmarcarConsulta_QuandoDeleteChamado() {
+    void deveDesmarcarConsulta() {
         // Arrange
-        var id = 99L;
-        when(desmarcarUseCase.deleteConsulta(id)).thenReturn(true);
+        when(desmarcarConsultaUseCase.deleteConsulta(1L)).thenReturn(true);
 
         // Act
-        Boolean result = service.desmarcarConsulta(id);
+        Boolean resultado = consultaService.desmarcarConsulta(1L);
 
         // Assert
-        assertThat(result).isTrue();
-        verify(desmarcarUseCase, times(1)).deleteConsulta(id);
+        assertTrue(resultado);
+        verify(desmarcarConsultaUseCase, times(1)).deleteConsulta(1L);
+        verifyNoInteractions(readConsultaUseCase, updateConsultaUseCase);
     }
 }

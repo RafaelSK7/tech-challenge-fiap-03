@@ -2,7 +2,7 @@ package fiap.tech.challenge.hospital_manager.consumer.consulta;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
-import fiap.tech.challenge.hospital_manager.consumer.cosulta.ConsultaConsumer;
+import fiap.tech.challenge.hospital_manager.config.RabbitConfig;
 import fiap.tech.challenge.hospital_manager.domain.usecase.consulta.MarcarConsultaUseCase;
 import fiap.tech.challenge.hospital_manager.exception.custom.TokenNotFoundException;
 import fiap.tech.challenge.hospital_manager.exception.custom.UsuarioNaoAutorizadoException;
@@ -12,18 +12,17 @@ import fiap.tech.challenge.hospital_manager.security.JwtUtil;
 import fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in.ConsultaIn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import java.time.LocalDateTime;
+
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ConsultaConsumerTest {
 
     @Mock
@@ -47,76 +46,77 @@ class ConsultaConsumerTest {
     @InjectMocks
     private ConsultaConsumer consultaConsumer;
 
+    private MessageProperties messageProperties;
+    private ConsultaIn consultaIn;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this);
-        consultaConsumer = new ConsultaConsumer(marcarConsultaUseCase, jwtUtil, objectMapper,
-                notificationPublisherService, errorHandler);
+        messageProperties = new MessageProperties();
+        consultaIn = new ConsultaIn(LocalDateTime.now(),1L, 2L, "CLINICA_GERAL");
     }
 
     @Test
-    void deveMarcarConsulta_QuandoMensagemValidaRecebida() throws Exception, UsuarioNaoAutorizadoException {
+    void deveMarcarConsultaComSucesso() throws Exception {
         // Arrange
-        MessageProperties props = new MessageProperties();
-        props.setHeader("Authorization", "Bearer validtoken");
-        Message message = new Message("{}".getBytes(), props);
+        messageProperties.setHeader("Authorization", "Bearer token123");
+        Message message = new Message("{}".getBytes(), messageProperties);
 
-        when(jwtUtil.getRoleFromToken("validtoken")).thenReturn("ROLE_ENFERMEIRO");
-        when(objectMapper.readValue(anyString(), eq(ConsultaIn.class))).thenReturn(mock(ConsultaIn.class));
+        when(jwtUtil.getRoleFromToken("token123")).thenReturn("ROLE_ENFERMEIRO");
+        when(objectMapper.readValue(anyString(), eq(ConsultaIn.class))).thenReturn(consultaIn);
 
         // Act
         consultaConsumer.marcarConsulta(message, channel);
 
         // Assert
-        verify(marcarConsultaUseCase).marcarConsulta(any(ConsultaIn.class));
-        verify(channel).basicAck(anyLong(), eq(false));
-        verify(notificationPublisherService).sendNewNotification(anyString());
+        verify(marcarConsultaUseCase).marcarConsulta(consultaIn);
+        verify(channel).basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        verify(notificationPublisherService).sendNewNotification("Sua consulta foi agendada com sucesso.");
         verify(errorHandler, never()).handleInvalidMessage(any(), any(), any());
     }
 
     @Test
-    void deveChamarErrorHandler_QuandoTokenAusente() throws Exception, UsuarioNaoAutorizadoException {
+    void deveLancarTokenNotFoundQuandoHeaderAusente() throws Exception {
         // Arrange
-        MessageProperties props = new MessageProperties();
-        Message message = new Message("{}".getBytes(), props);
+        Message message = new Message("{}".getBytes(), messageProperties);
 
         // Act
         consultaConsumer.marcarConsulta(message, channel);
 
         // Assert
         verify(errorHandler).handleInvalidMessage(eq(message), eq(channel), any(TokenNotFoundException.class));
-        verify(marcarConsultaUseCase, never()).marcarConsulta(any());
+        verifyNoInteractions(marcarConsultaUseCase);
     }
 
     @Test
-    void deveChamarErrorHandler_QuandoUsuarioNaoAutorizado() {
-        MessageProperties props = new MessageProperties();
-        props.setHeader("Authorization", "Bearer invalidrole");
-        Message message = new Message("{}".getBytes(), props);
+    void deveLancarUsuarioNaoAutorizadoQuandoRoleInvalida() throws Exception {
+        // Arrange
+        messageProperties.setHeader("Authorization", "Bearer token123");
+        Message message = new Message("{}".getBytes(), messageProperties);
 
-        when(jwtUtil.getRoleFromToken("invalidrole")).thenReturn("ROLE_PACIENTE");
+        when(jwtUtil.getRoleFromToken("token123")).thenReturn("ROLE_MEDICO");
 
-        assertThrows(UsuarioNaoAutorizadoException.class, () -> {
-            consultaConsumer.marcarConsulta(message, channel);
-        });
-
-        verify(marcarConsultaUseCase, never()).marcarConsulta(any());
-    }
-
-    @Test
-    void deveChamarErrorHandler_QuandoExceptionGenerica() throws Exception, UsuarioNaoAutorizadoException {
-
-        MessageProperties props = new MessageProperties();
-        props.setHeader("Authorization", "Bearer validtoken");
-        Message message = new Message("{}".getBytes(), props);
-
-        when(jwtUtil.getRoleFromToken("validtoken")).thenReturn("ROLE_ENFERMEIRO");
-        when(objectMapper.readValue(anyString(), eq(ConsultaIn.class)))
-                .thenThrow(new RuntimeException("Erro de parsing"));
-
+        // Act
         consultaConsumer.marcarConsulta(message, channel);
 
+        // Assert
+        verify(errorHandler).handleInvalidMessage(eq(message), eq(channel), any(UsuarioNaoAutorizadoException.class));
+        verifyNoInteractions(marcarConsultaUseCase);
+    }
+
+    @Test
+    void deveEncaminharErroParaHandlerQuandoFalhaNaDeserializacao() throws Exception {
+        // Arrange
+        messageProperties.setHeader("Authorization", "Bearer token123");
+        Message message = new Message("{}".getBytes(), messageProperties);
+
+        when(jwtUtil.getRoleFromToken("token123")).thenReturn("ROLE_ENFERMEIRO");
+        when(objectMapper.readValue(anyString(), eq(ConsultaIn.class))).thenThrow(new RuntimeException("Erro ao ler JSON"));
+
+        // Act
+        consultaConsumer.marcarConsulta(message, channel);
+
+        // Assert
         verify(errorHandler).handleInvalidMessage(eq(message), eq(channel), any(RuntimeException.class));
-        verify(marcarConsultaUseCase, never()).marcarConsulta(any());
+        verifyNoInteractions(marcarConsultaUseCase);
     }
 }
