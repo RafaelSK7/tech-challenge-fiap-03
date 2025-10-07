@@ -42,7 +42,18 @@
 					"name": "FindAll",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pacientes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pacientes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -50,7 +61,19 @@
 					"name": "FindById",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/pacientes/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"pacientes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -61,7 +84,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\"\r\n}",
+							"raw": "{\r\n    \"nomePaciente\": \"Adriana\",\r\n    \"nomeConvenio\": \"Bradesco\",\r\n    \"carteirinhaConvenio\": \"2398742640968\",\r\n    \"username\": \"paciente\",\r\n    \"password\": \"guest\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -137,6 +160,34 @@
 					"response": []
 				},
 				{
+					"name": "Create enfermeiro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeProfissional\": \"Joelson\",\r\n    \"especialidades\": [\"ENFERMAGEM\"],\r\n    \"conselhoRegional\": \"654321\",\r\n    \"username\": \"enfermeiro\",\r\n    \"password\":\"guest\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/profissional",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profissional"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "FindAll",
 					"request": {
 						"method": "GET",
@@ -161,7 +212,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/profissional/2",
+							"raw": "http://localhost:8080/profissional/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -169,7 +220,7 @@
 							"port": "8080",
 							"path": [
 								"profissional",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -182,7 +233,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nomeProfissional\": \"Dr Cebola\",\r\n    \"especialidades\": [\"CLINICA_GERAL\",\"CARDIOLOGIA\", \"ENDOCRINOLOGIA\"],\r\n    \"conselhoRegional\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"nomeProfissional\": \"Dr Cebola\",\r\n    \"especialidades\": [\"CLINICA_GERAL\",\"CARDIOLOGIA\", \"ENDOCRINOLOGIA\"],\r\n    \"conselhoRegional\": \"123456\",\r\n    \"username\": \"cebolao\",\r\n    \"password\": \"dedao\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -210,7 +261,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/profissional/2",
+							"raw": "http://localhost:8080/profissional/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -218,7 +269,7 @@
 							"port": "8080",
 							"path": [
 								"profissional",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -233,7 +284,14 @@
 					"name": "Marcar Consulta",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n  \"dataHoraConsulta\": \"2025-11-20T12:00:00\",\r\n  \"idPaciente\": 1,\r\n  \"idProfissional\": 1,\r\n  \"especialidade\": \"ginecologia\"\r\n}",
@@ -295,6 +353,108 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Consulta por ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX1BBQ0lFTlRFIn1dLCJzdWIiOiJwYWNpZW50ZSIsImlhdCI6MTc1OTcwNjg4MiwiZXhwIjoxNzU5NzEwNDgyfQ.462Kln2C6WlRS4nJ-I6xQZTIAF9DXcw1su7sU2cWBUc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"query\": \"query ConsultaPorId($id: ID!) { consultaPorId(id: $id) { idConsulta dataHoraConsulta paciente { idPaciente nomePaciente nomeConvenio carteirinhaConvenio } profissional { idProfissional nomeProfissional especialidades conselhoRegional } especialidade } }\",\r\n  \"variables\": {\r\n    \"id\": \"1\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar consulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX01FRElDTyJ9XSwic3ViIjoicHJvZmlzc2lvbmFsIiwiaWF0IjoxNzU5NzA4OTI0LCJleHAiOjE3NTk3MTI1MjR9.U9It6sLgJ-9AXKxxs9hTjnbe-AaWAilFGvgMpq1Lmfg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"query\": \"mutation AtualizarConsulta($id: ID!, $input: ConsultaIn!) { atualizarConsulta(id: $id, input: $input) { idConsulta dataHoraConsulta paciente { idPaciente nomePaciente nomeConvenio carteirinhaConvenio } profissional { idProfissional nomeProfissional especialidades conselhoRegional } especialidade } }\",\r\n  \"variables\": {\r\n    \"id\": \"1\",\r\n    \"input\": {\r\n      \"dataHoraConsulta\": \"2025-10-10T14:00:00\",\r\n      \"idPaciente\": \"1\",\r\n      \"idProfissional\": \"1\",\r\n      \"especialidade\": \"CLINICA_GERAL\"\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desmarcar consulta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX01FRElDTyJ9XSwic3ViIjoicHJvZmlzc2lvbmFsIiwiaWF0IjoxNzU5NzA3MTkwLCJleHAiOjE3NTk3MTA3OTB9.LpjHhBoAHJZnek23WVCfqFZCcS72lfCpVhqyfiDND9E",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"query\": \"mutation DeletarConsulta($id: ID!) { deletarConsulta(id: $id) }\",\r\n  \"variables\": {\r\n    \"id\": \"1\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/graphql",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -316,6 +476,66 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"username\": \"enfermeiro\",\r\n    \"password\": \"guest\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth profissional",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"profissional\",\r\n    \"password\": \"guest\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth paciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"paciente\",\r\n    \"password\": \"guest\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
