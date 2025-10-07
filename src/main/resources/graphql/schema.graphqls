@@ -1,0 +1,64 @@
+enum Especialidade {
+    CLINICA_GERAL
+    PEDIATRIA
+    CIRURGIA_GERAL
+    GINECOLOGIA_OBSTETRICIA
+    ANESTESIOLOGIA
+    ORTOPEDIA_TRAUMATOLOGIA
+    CARDIOLOGIA
+    PSIQUIATRIA
+    DERMATOLOGIA
+    NEUROLOGIA
+    ENDOCRINOLOGIA
+    GASTROENTEROLOGIA
+    UROLOGIA
+    RADIOLOGIA
+    OTORRINOLARINGOLOGIA
+    INFECTOLOGIA
+    NEFROLOGIA
+    ONCOLOGIA
+    REUMATOLOGIA
+    GERIATRIA
+    ENFERMAGEM
+}
+
+type Paciente {
+    idPaciente: ID!
+    nomePaciente: String!
+    nomeConvenio: String!
+    carteirinhaConvenio: String!
+    consultas: [Consulta!]
+}
+
+type Profissional {
+    idProfissional: ID!
+    nomeProfissional: String!
+    especialidades: [Especialidade!]!
+    conselhoRegional: Int
+    consultas: [Consulta!]
+}
+
+type Consulta {
+    idConsulta: ID!
+    dataHoraConsulta: String!
+    paciente: Paciente!
+    profissional: Profissional!
+    especialidade: Especialidade!
+}
+
+extend type Query {
+    todasConsultas: [Consulta!]!
+    consultaPorId(id: ID!): Consulta
+}
+
+input ConsultaIn {
+    dataHoraConsulta: String!
+    idPaciente: ID!
+    idProfissional: ID!
+    especialidade: Especialidade!
+}
+
+extend type Mutation {
+    atualizarConsulta(id: ID!, input: ConsultaIn!): Consulta
+    deletarConsulta(id: ID!): Boolean
+}

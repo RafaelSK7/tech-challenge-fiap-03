@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,13 +38,15 @@ class UpdatePacienteUseCaseTest {
 
         // Initialize test data
         pacienteExistente = new Paciente(
-            new PacienteIn("Nome Antigo", "Convenio Antigo", "Carteirinha Antiga")
+            new PacienteIn("Nome Antigo", "Convenio Antigo", "Carteirinha Antiga","paciente", "guest"), new BCryptPasswordEncoder()
         );
 
         pacienteRequest = new PacienteIn(
             "Nome Novo",
             "Convenio Novo",
-            "Carteirinha Nova"
+            "Carteirinha Nova",
+                "paciente",
+                "guest"
         );
     }
 

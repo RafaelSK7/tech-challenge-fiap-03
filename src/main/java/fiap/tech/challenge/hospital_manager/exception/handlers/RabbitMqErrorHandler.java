@@ -1,7 +1,6 @@
 package fiap.tech.challenge.hospital_manager.exception.handlers;
 
 import com.rabbitmq.client.Channel;
-import fiap.tech.challenge.hospital_manager.dto.in.ConsultaIn;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class RabbitMqErrorHandler implements ErrorHandler {
         log.error("Erro ao processar mensagem RabbitMQ", t);
     }
 
-    public void handleInvalidMessage(ConsultaIn consultaIn, Message message, Channel channel, Exception e) {
+    public void handleInvalidMessage(Message message, Channel channel, Exception e) {
         try {
             log.warn("Mensagem inválida descartada: {} - Motivo: {}", new String(message.getBody()), e.getMessage());
             // Rejeita a mensagem sem reencaminhar (evita loop infinito)

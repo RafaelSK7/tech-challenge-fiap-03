@@ -1,6 +1,7 @@
 package fiap.tech.challenge.hospital_manager.domain.usecase.profissional;
 
 import fiap.tech.challenge.hospital_manager.domain.entity.Profissional;
+import fiap.tech.challenge.hospital_manager.domain.entity.Usuario;
 import fiap.tech.challenge.hospital_manager.dto.in.ProfissionalIn;
 import fiap.tech.challenge.hospital_manager.repository.profissional.ProfissionalRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,13 @@ public class UpdateProfissionalUseCase {
         updated.setNomeProfissional(profissionalIn.nomeProfissional());
         updated.setEspecialidades(profissionalIn.especialidades());
         updated.setConselhoRegional(profissionalIn.conselhoRegional());
+
+        Usuario usuario = updated.getUsuario();
+        usuario.setUsername(profissionalIn.username());
+        usuario.setPassword(profissionalIn.password());
+
+        updated.setUsuario(usuario);
+
         return profissionalRepository.save(updated);
     }
 }

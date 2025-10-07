@@ -1,4 +1,4 @@
-package fiap.tech.challenge.hospital_manager.controller.exceptions;
+package fiap.tech.challenge.hospital_manager.exception.handlers;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

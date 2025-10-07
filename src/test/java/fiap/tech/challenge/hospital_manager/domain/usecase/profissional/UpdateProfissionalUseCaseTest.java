@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -43,14 +44,16 @@ class UpdateProfissionalUseCaseTest {
             new ProfissionalIn(
                 "Dr. João Silva",
                 List.of(Especialidade.CARDIOLOGIA),
-                123456
-            )
+                123456,
+                    "profissional",
+                    "guest"
+            ), new BCryptPasswordEncoder()
         );
 
         profissionalRequest = new ProfissionalIn(
             "Dr. João Silva Atualizado",
             List.of(Especialidade.CARDIOLOGIA, Especialidade.CLINICA_GERAL),
-            654321
+            654321, "profissional", "guest"
         );
     }
 
