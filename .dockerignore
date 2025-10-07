@@ -1,0 +1,12 @@
+# Ignorar diretórios e arquivos desnecessários
+target/
+.git/
+.gitignore
+Dockerfile
+docker-compose.yml
+README.md
+*.iml
+.idea/
+*.log
+*.md
+*.DS_Store

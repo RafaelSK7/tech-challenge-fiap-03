@@ -1,5 +1,8 @@
 package fiap.tech.challenge.hospital_manager.config;
 
+import fiap.tech.challenge.hospital_manager.exception.handlers.RabbitMqErrorHandler;
+
+import org.springframework.amqp.core.AcknowledgeMode;
 import fiap.tech.challenge.marcador_consultas.consulta_producer.dto.in.ConsultaIn;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -12,6 +15,8 @@ import org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,9 +78,17 @@ public class RabbitConfig {
     }
 
     @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(consumerMessageConverter());
+        return template;
+    }
+
+    @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory,
-            Jackson2JsonMessageConverter consumerMessageConverter) {
+            Jackson2JsonMessageConverter consumerMessageConverter
+            RabbitMqErrorHandler errorHandler) {
 
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
@@ -88,6 +101,11 @@ public class RabbitConfig {
         // 👇 útil para debug
         factory.setDefaultRequeueRejected(false);
         factory.setMissingQueuesFatal(false);
+
+        factory.setErrorHandler(errorHandler);
+        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+
         return factory;
+
     }
 }
