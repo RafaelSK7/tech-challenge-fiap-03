@@ -4,3 +4,6 @@ spring:
     port: ${SPRING_RABBITMQ_PORT:5672}
     username: ${SPRING_RABBITMQ_USERNAME:guest}
     password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
+auth:
+  url: ${AUTH_URL:http://localhost:8080/api/auth/login}
